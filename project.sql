@@ -103,33 +103,99 @@ CREATE OR REPLACE VIEW vw_cohort AS
 		FROM first_purchase_date_2023)
 	SELECT cohort_date,
 	index,
-	COUNT (DISTINCT customer_id) AS user_count,
+	COUNT (DISTINCT customer_id) AS customer_count,
 	SUM(amount) AS revenue
 	FROM cohort_index 
 	GROUP BY cohort_date, index
-	ORDER BY cohort_date, index)
+	ORDER BY cohort_date, index);
 
-
+WITH user_cohort AS 
+	(SELECT 
+	  cohort_date,
+	  SUM(CASE WHEN index=1 THEN customer_count ELSE 0 END) AS m1,
+	  SUM(CASE WHEN index=2 THEN customer_count ELSE 0 END) AS m2,
+	  SUM(CASE WHEN index=3 THEN customer_count ELSE 0 END) AS m3,
+	  SUM(CASE WHEN index=4 THEN customer_count ELSE 0 END) AS m4,
+	  SUM(CASE WHEN index=5 THEN customer_count ELSE 0 END) AS m5,
+	  SUM(CASE WHEN index=6 THEN customer_count ELSE 0 END) AS m6,
+	  SUM(CASE WHEN index=7 THEN customer_count ELSE 0 END) AS m7,
+	  SUM(CASE WHEN index=8 THEN customer_count ELSE 0 END) AS m8,
+	  SUM(CASE WHEN index=9 THEN customer_count ELSE 0 END) AS m9,
+	  SUM(CASE WHEN index=10 THEN customer_count ELSE 0 END) AS m10,
+	  SUM(CASE WHEN index=11 THEN customer_count ELSE 0 END) AS m11,
+	  SUM(CASE WHEN index=12 THEN customer_count ELSE 0 END) AS m12
+	  FROM public.vw_cohort
+	  GROUP BY cohort_date
+	  ORDER BY cohort_date)
+   -- Phân tích tỷ lệ giữ chân người dùng (Retention rate)
 SELECT 
   cohort_date,
-  SUM(CASE WHEN index=1 THEN user_count ELSE 0 END) AS m1,
-  SUM(CASE WHEN index=2 THEN user_count ELSE 0 END) AS m2,
-  SUM(CASE WHEN index=3 THEN user_count ELSE 0 END) AS m3,
-  SUM(CASE WHEN index=4 THEN user_count ELSE 0 END) AS m4,
-  SUM(CASE WHEN index=5 THEN user_count ELSE 0 END) AS m5,
-  SUM(CASE WHEN index=6 THEN user_count ELSE 0 END) AS m6,
-  SUM(CASE WHEN index=7 THEN user_count ELSE 0 END) AS m7,
-  SUM(CASE WHEN index=8 THEN user_count ELSE 0 END) AS m8,
-  SUM(CASE WHEN index=9 THEN user_count ELSE 0 END) AS m9,
-  SUM(CASE WHEN index=10 THEN user_count ELSE 0 END) AS m10,
-  SUM(CASE WHEN index=11 THEN user_count ELSE 0 END) AS m11,
-  SUM(CASE WHEN index=12 THEN user_count ELSE 0 END) AS m12
-  FROM public.vw_cohort
-  GROUP BY cohort_date
-  ORDER BY cohort_date
+  ROUND(m1/m1*100.0,2) || '%' AS m1,
+  ROUND(m2/m1*100.0,2) || '%' AS m2,
+  ROUND(m3/m1*100.0,2) || '%' AS m3,
+  ROUND(m4/m1*100.0,2) || '%' AS m4,
+  ROUND(m5/m1*100.0,2) || '%' AS m5,
+  ROUND(m6/m1*100.0,2) || '%' AS m6,
+  ROUND(m7/m1*100.0,2) || '%' AS m7,
+  ROUND(m8/m1*100.0,2) || '%' AS m8,
+  ROUND(m9/m1*100.0,2) || '%' AS m9,
+  ROUND(m10/m1*100.0,2) || '%' AS m10,
+  ROUND(m11/m1*100.0,2) || '%' AS m11,
+  ROUND(m12/m1*100.0,2) || '%' AS m12
+FROM user_cohort
 
 
-  -- Ai là khách hàng tốt nhất, phân tích dựa vào RFM 
+  -- Ai là khách hàng tốt nhất, phân tích dựa vào RFM
+CREATE TABLE segment_score
+(segment Varchar,
+  scores Varchar);
+-- Import Data from segment_score.csv 
+
+WITH customer_rfm AS
+	(SELECT 
+	customer_id,
+	CURRENT_DATE - MAX (invoice_date) AS R,
+	COUNT (customer_id) AS F,
+	SUM (quantity*price) AS M
+	FROM public.customer_shopping_data
+	GROUP BY customer_id),
+rfm_score AS
+	(SELECT customer_id,
+	ntile(5) OVER (ORDER BY R DESC) AS R_score,
+	ntile(5) OVER (ORDER BY F) AS F_score,
+	ntile(5) OVER (ORDER BY M DESC) AS M_score
+	FROM customer_rfm),
+rfm AS
+	(SELECT customer_id,
+	CAST(R_score AS varchar)||CAST(F_score AS varchar)||CAST(M_score AS varchar) AS RFM_score
+	FROM rfm_score)
+	
+SELECT b.segment, COUNT(*) FROM rfm AS a
+JOIN public.segment_score AS b ON a.RFM_score=b.scores
+GROUP BY b.segment
+ORDER BY COUNT(*)
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
