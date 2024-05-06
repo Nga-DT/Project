@@ -13,6 +13,8 @@ CREATE TABLE customer_shopping_data
 
 -- Làm sạch dữ liệu
   -- Thay đổi DATE FORMAT
+SET DATESTYLE TO 'ISO,DMY';
+
 ALTER TABLE public.customer_shopping_data
   ALTER COLUMN invoice_date TYPE DATE USING (TRIM(invoice_date):: DATE)
 
