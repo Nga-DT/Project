@@ -109,7 +109,9 @@ CREATE OR REPLACE VIEW vw_cohort AS
 	GROUP BY cohort_date, index
 	ORDER BY cohort_date, index);
 
-WITH user_cohort AS 
+    -- Phân tích số lượng customer cohort  
+
+CREATE OR REPLACE VIEW customer_cohort AS 
 	(SELECT 
 	  cohort_date,
 	  SUM(CASE WHEN index=1 THEN customer_count ELSE 0 END) AS m1,
@@ -127,6 +129,8 @@ WITH user_cohort AS
 	  FROM public.vw_cohort
 	  GROUP BY cohort_date
 	  ORDER BY cohort_date)
+
+SELECT * FROM public.vw_customer_cohort;
    -- Phân tích tỷ lệ giữ chân người dùng (Retention rate)
 SELECT 
   cohort_date,
@@ -142,7 +146,7 @@ SELECT
   ROUND(m10/m1*100.0,2) || '%' AS m10,
   ROUND(m11/m1*100.0,2) || '%' AS m11,
   ROUND(m12/m1*100.0,2) || '%' AS m12
-FROM user_cohort
+FROM public.vw_customer_cohort
 
 
   -- Ai là khách hàng tốt nhất, phân tích dựa vào RFM
@@ -174,6 +178,8 @@ SELECT b.segment, COUNT(*) FROM rfm AS a
 JOIN public.segment_score AS b ON a.RFM_score=b.scores
 GROUP BY b.segment
 ORDER BY COUNT(*)
+-- Nhận xét: Khách hàng nhóm Potential Loyalist chiếm số lượng nhiều nhất
+
 
 	
 
