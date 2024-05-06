@@ -82,7 +82,6 @@ WITH order_ranking AS
 SELECT invoice_year, category
 FROM order_ranking
 WHERE stt<=3
--- Nhận xét: Clothing, Cosmetics, Food & Beverage là 3 sản phẩm bán chạy nhất trong cả 3 năm 2021,2022,2023.
 
   -- Cohort analysis
 CREATE OR REPLACE VIEW vw_cohort AS	
