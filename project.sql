@@ -70,7 +70,7 @@ FROM public.customer_shopping_data
 GROUP BY invoice_year, invoice_month
 ORDER BY invoice_year, invoice_month
 
-  -- Top 3 sản phẩm bán chạy mỗi năm
+  -- Sản phẩm bán chạy nhất mỗi năm
 WITH order_ranking AS	
 	(SELECT 
 	invoice_year, category,
@@ -81,7 +81,7 @@ WITH order_ranking AS
 	ORDER BY invoice_year, SUM(quantity) DESC)
 SELECT invoice_year, category
 FROM order_ranking
-WHERE stt<=3
+WHERE stt=1
 
   -- Cohort analysis
 CREATE OR REPLACE VIEW vw_cohort AS	
