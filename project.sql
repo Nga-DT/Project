@@ -112,7 +112,7 @@ CREATE OR REPLACE VIEW vw_cohort AS
 
     -- Phân tích số lượng customer cohort  
 
-CREATE OR REPLACE VIEW customer_cohort AS 
+CREATE OR REPLACE VIEW vw_customer_cohort AS 
 	(SELECT 
 	  cohort_date,
 	  SUM(CASE WHEN index=1 THEN customer_count ELSE 0 END) AS m1,
