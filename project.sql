@@ -135,18 +135,18 @@ SELECT * FROM public.vw_customer_cohort;
    -- Phân tích tỷ lệ giữ chân người dùng (Retention rate)
 SELECT 
   cohort_date,
-  ROUND(m1/m1*100.0,2) || '%' AS m1,
-  ROUND(m2/m1*100.0,2) || '%' AS m2,
-  ROUND(m3/m1*100.0,2) || '%' AS m3,
-  ROUND(m4/m1*100.0,2) || '%' AS m4,
-  ROUND(m5/m1*100.0,2) || '%' AS m5,
-  ROUND(m6/m1*100.0,2) || '%' AS m6,
-  ROUND(m7/m1*100.0,2) || '%' AS m7,
-  ROUND(m8/m1*100.0,2) || '%' AS m8,
-  ROUND(m9/m1*100.0,2) || '%' AS m9,
-  ROUND(m10/m1*100.0,2) || '%' AS m10,
-  ROUND(m11/m1*100.0,2) || '%' AS m11,
-  ROUND(m12/m1*100.0,2) || '%' AS m12
+  ROUND(m1/m1*100.0,0) || '%' AS m1,
+  ROUND(m2/m1*100.0,0) || '%' AS m2,
+  ROUND(m3/m1*100.0,0) || '%' AS m3,
+  ROUND(m4/m1*100.0,0) || '%' AS m4,
+  ROUND(m5/m1*100.0,0) || '%' AS m5,
+  ROUND(m6/m1*100.0,0) || '%' AS m6,
+  ROUND(m7/m1*100.0,0) || '%' AS m7,
+  ROUND(m8/m1*100.0,0) || '%' AS m8,
+  ROUND(m9/m1*100.0,0) || '%' AS m9,
+  ROUND(m10/m1*100.0,0) || '%' AS m10,
+  ROUND(m11/m1*100.0,0) || '%' AS m11,
+  ROUND(m12/m1*100.0,0) || '%' AS m12
 FROM public.vw_customer_cohort
 
 
