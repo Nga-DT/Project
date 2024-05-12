@@ -8,7 +8,7 @@ This project offers an illustration of data analysis given between 2021 and 2023
 * Customer retention cohort in 2023
 * RFM analysis
 
- File dashboard.pbix is a sample dashboard which illustates all of the results gained from the coding.
+### File dashboard.pbix is a sample dashboard which illustates all of the results gained from the coding.
 
  ### How to process this project
  * Run the code in PostgreSQL
