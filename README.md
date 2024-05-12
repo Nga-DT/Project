@@ -14,5 +14,5 @@ This project offers an illustration of data analysis given between 2021 and 2023
  * Run the code in PostgreSQL
  * Display the dashboard in Power BI
 
-#### Since it is the first project I have done as a starter, there are several issues which lead to error coding. Please submit an issue using the issues tab above if you would like to propose an improvement to this project. 
+#### Since it is the first project I have done as a starter, there are several issues which lead to error coding. Please submit an suggestion so that the project can be improved.
 
